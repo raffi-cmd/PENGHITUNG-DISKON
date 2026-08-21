@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FF2D7B">
+<meta name="description" content="DiskonKilat — Kalkulator diskon belanja bertingkat cepat, akurat, dan real-time.">
+<title>DiskonKilat — Kalkulator Diskon Bertingkat</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DISKONKILAT — Custom CSS Design System
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #FFF7F2;
+  --bg-gradient: radial-gradient(circle at 85% -10%, #FFE0EC 0%, transparent 50%),
+                 radial-gradient(circle at 10% 110%, #FFEBD9 0%, transparent 40%);
+  --surface: #FFFFFF;
+  --surface-subtle: #FFF9F6;
+  --surface-border: #F5E3D8;
+  --surface-border-strong: #E5CABE;
+  
+  --text-main: #1C130D;
+  --text-muted: #7E6B5D;
+  --text-soft: #A89688;
+  
+  --primary: #FF2D7B;
+  --primary-hover: #E61565;
+  --primary-subtle: #FFE4EE;
+  --primary-glow: rgba(255, 45, 123, 0.28);
+  
+  --accent-orange: #FF6B00;
+  --accent-orange-subtle: #FFF0E5;
+  
+  --success: #10B981;
+  --success-subtle: #D1FAE5;
+  --danger: #EF4444;
+  --danger-subtle: #FEE2E2;
+
+  --shadow-sm: 0 2px 4px rgba(28, 19, 13, 0.03);
+  --shadow-md: 0 6px 18px -4px rgba(255, 45, 123, 0.1), 0 2px 6px rgba(28, 19, 13, 0.04);
+  --shadow-lg: 0 20px 35px -10px rgba(255, 45, 123, 0.15), 0 1px 3px rgba(0,0,0,0.05);
+
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --radius-full: 9999px;
+}
+
+html.dark {
+  --bg: #0F0A0D;
+  --bg-gradient: radial-gradient(circle at 85% -10%, #2A0E1A 0%, transparent 50%),
+                 radial-gradient(circle at 10% 110%, #251206 0%, transparent 40%);
+  --surface: #191216;
+  --surface-subtle: #22181F;
+  --surface-border: #33212D;
+  --surface-border-strong: #4A3041;
+  
+  --text-main: #FDF4F8;
+  --text-muted: #A38E9B;
+  --text-soft: #6A5763;
+  
+  --primary: #FF4D8F;
+  --primary-hover: #FF2D7B;
+  --primary-subtle: #381223;
+  --primary-glow: rgba(255, 77, 143, 0.35);
+  
+  --accent-orange: #FF8533;
+  --accent-orange-subtle: #331A0B;
+  
+  --success: #34D399;
+  --success-subtle: #064E3B;
+  --danger: #F87171;
+  --danger-subtle: #450A0A;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 6px 18px -4px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  background-color: var(--bg);
+  background-image: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Accessibility */
+.skip-link {
+  position: absolute;
+  top: -999px;
+  left: 12px;
+  z-index: 100;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: #FFF;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 13px;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+/* Header */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 247, 242, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--surface-border);
+  height: 68px;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+html.dark .header {
+  background: rgba(15, 10, 13, 0.85);
+}
+
+.header-container {
+  max-width: 1060px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(135deg, var(--primary), var(--accent-orange));
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #FFF;
+  box-shadow: 0 4px 12px var(--primary-glow);
+  transform: rotate(-4deg);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.brand:hover .brand-icon {
+  transform: rotate(0deg) scale(1.08);
+}
+
+.brand-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-main);
+}
+.brand-title span {
+  color: var(--primary);
+}
+
+.theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--surface-border);
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all 0.2s ease;
+}
+.theme-toggle:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: scale(1.05);
+}
+
+/* Layout */
+.main-wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+
+.hero {
+  text-align: left;
+  margin-bottom: 32px;
+}
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--primary);
+  background: var(--primary-subtle);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+}
+.hero-title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+.hero-title .glow {
+  background: linear-gradient(135deg, var(--primary), var(--accent-orange));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-desc {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 8px;
+  max-width: 540px;
+}
+
+/* App Grid */
+.calculator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* Card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-xl);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.card-header {
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* Form inputs */
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-main);
+  display: flex;
+  justify-content: space-between;
+}
+.input-label .sub {
+  font-weight: 400;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-affix {
+  position: absolute;
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-soft);
+  pointer-events: none;
+  user-select: none;
+}
+.input-affix.prefix { left: 14px; }
+.input-affix.suffix { right: 14px; }
+
+.custom-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  background: var(--surface-subtle);
+  border: 1.5px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  outline: none;
+  transition: all 0.2s ease;
+}
+.custom-input.has-prefix { padding-left: 42px; }
+.custom-input.has-suffix { padding-right: 36px; }
+
+.custom-input:focus {
+  border-color: var(--primary);
+  background: var(--surface);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+.custom-input.is-invalid {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 4px var(--danger-subtle);
+}
+
+.error-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--danger);
+  display: none;
+  margin-top: 2px;
+}
+.error-text.show {
+  display: block;
+}
+
+/* Multi discounts row */
+.discount-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Quick chips */
+.preset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+.chip {
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--surface-border);
+  background: var(--surface-subtle);
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+.chip:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+.chip.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #FFF;
+  box-shadow: 0 3px 10px var(--primary-glow);
+}
+
+/* Action buttons */
+.btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.btn {
+  height: 48px;
+  border-radius: var(--radius-lg);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-primary {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  color: #FFF;
+  box-shadow: 0 4px 14px var(--primary-glow);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--primary-glow);
+}
+.btn-primary:active {
+  transform: translateY(0) scale(0.98);
+}
+.btn-secondary {
+  padding: 0 20px;
+  background: var(--surface-subtle);
+  border: 1.5px solid var(--surface-border);
+  color: var(--text-muted);
+}
+.btn-secondary:hover {
+  border-color: var(--surface-border-strong);
+  color: var(--text-main);
+}
+
+/* Result Card */
+.result-card {
+  position: sticky;
+  top: 92px;
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+}
+
+.result-badge-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid var(--surface-border);
+}
+.result-badge {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background: var(--primary-subtle);
+  color: var(--primary);
+  transition: all 0.3s ease;
+}
+
+.final-price-box {
+  padding: 24px 24px 18px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--surface-subtle) 0%, var(--surface) 100%);
+}
+.final-price-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+.strike-price {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text-soft);
+  text-decoration: line-through;
+  text-decoration-color: var(--danger);
+  text-decoration-thickness: 2px;
+  min-height: 24px;
+}
+.final-price-value {
+  font-size: clamp(34px, 4.5vw, 44px);
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-top: 4px;
+  letter-spacing: -0.02em;
+}
+.final-price-value .rp {
+  font-size: 22px;
+  font-weight: 700;
+  margin-right: 2px;
+  vertical-align: 4px;
+}
+
+/* Savings progress */
+.savings-banner {
+  margin: 0 24px 18px;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-subtle);
+  border: 1px solid var(--surface-border);
+}
+.savings-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+.savings-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+.savings-percent {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--success);
+}
+.progress-track {
+  height: 8px;
+  background: var(--surface-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--radius-full);
+  background: linear-gradient(90deg, var(--accent-orange), var(--primary));
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Breakdown rows */
+.breakdown-box {
+  padding: 0 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--surface-border);
+}
+.breakdown-row:last-child {
+  border-bottom: none;
+  padding-top: 4px;
+}
+.breakdown-label {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tag-badge {
+  font-size: 10px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: var(--accent-orange-subtle);
+  color: var(--accent-orange);
+}
+.breakdown-val {
+  font-weight: 700;
+}
+.breakdown-val.cut {
+  color: var(--danger);
+}
+.breakdown-val.save {
+  color: var(--success);
+  font-size: 15px;
+}
+
+/* Calculation Steps Detail */
+.steps-box {
+  padding: 16px 24px;
+  background: var(--surface-subtle);
+  border-top: 1px solid var(--surface-border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+.step-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+.step-text {
+  flex: 1;
+  color: var(--text-muted);
+}
+.step-val {
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Animations */
+@keyframes numberPulse {
+  0% { transform: scale(0.92); opacity: 0.5; }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.animate-pop {
+  animation: numberPulse 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* Confetti particles */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: confettiFall 0.8s ease-out forwards;
+}
+@keyframes confettiFall {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) rotate(360deg); opacity: 0; }
+}
+
+/* Responsive */
+@media (max-width: 840px) {
+  .calculator-grid {
+    grid-template-columns: 1fr;
+  }
+  .result-card {
+    position: static;
+  }
+}
+@media (max-width: 480px) {
+  .card {
+    padding: 20px;
+  }
+  .discount-row {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Lewati ke konten utama</a>
+
+<header class="header">
+  <div class="header-container">
+    <a href="#" class="brand">
+      <div class="brand-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="19" y1="5" x2="5" y2="19"></line>
+          <circle cx="6.5" cy="6.5" r="2.5" fill="currentColor"></circle>
+          <circle cx="17.5" cy="17.5" r="2.5" fill="currentColor"></circle>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">Diskon<span>Kilat</span></div>
+      </div>
+    </a>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti Tema">
+      <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </button>
+  </div>
+</header>
+
+<main id="main" class="main-wrap">
+  <section class="hero">
+    <div class="hero-tag">&#9889; Kalkulator Cepat & Akurat</div>
+    <h1 class="hero-title">Hitung diskon ganda <span class="glow">tanpa pusing.</span></h1>
+    <p class="hero-desc">Masukkan harga awal dan persentase diskon bertingkat. Hasil akhir dan total hemat langsung dihitung seketika.</p>
+  </section>
+
+  <div class="calculator-grid">
+    
+    <!-- INPUT FORM CARD -->
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)">
+            <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+          </svg>
+          Input Pembelian
+        </h2>
+        <p class="card-subtitle">Ketik nominal harga dan diskon yang berlaku.</p>
+      </div>
+
+      <form id="calcForm" class="form-stack" novalidate>
+        <!-- Harga Awal -->
+        <div class="input-group">
+          <label for="inputPrice" class="input-label">
+            <span>Harga Awal Produk</span>
+            <span class="sub">Rupiah (Rp)</span>
+          </label>
+          <div class="input-box">
+            <span class="input-affix prefix">Rp</span>
+            <input id="inputPrice" class="custom-input has-prefix" type="text" inputmode="numeric" placeholder="250.000" autocomplete="off" required>
+          </div>
+          <div id="errPrice" class="error-text"></div>
+        </div>
+
+        <!-- Diskon Row -->
+        <div class="discount-row">
+          <div class="input-group">
+            <label for="inputDisc1" class="input-label">
+              <span>Diskon Utama</span>
+              <span class="sub">(%)</span>
+            </label>
+            <div class="input-box">
+              <input id="inputDisc1" class="custom-input has-suffix" type="text" inputmode="decimal" placeholder="50" autocomplete="off">
+              <span class="input-affix suffix">%</span>
+            </div>
+            <div id="errDisc1" class="error-text"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="inputDisc2" class="input-label">
+              <span>Diskon Tambahan</span>
+              <span class="sub">(Extra %)</span>
+            </label>
+            <div class="input-box">
+              <input id="inputDisc2" class="custom-input has-suffix" type="text" inputmode="decimal" placeholder="20" autocomplete="off">
+              <span class="input-affix suffix">%</span>
+            </div>
+            <div id="errDisc2" class="error-text"></div>
+          </div>
+        </div>
+
+        <!-- Preset Chips Diskon 1 -->
+        <div>
+          <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted)">Preset Diskon Cepat</span>
+          <div class="preset-chips" id="presetChips">
+            <button class="chip" type="button" data-d1="10" data-d2="0">10%</button>
+            <button class="chip" type="button" data-d1="20" data-d2="0">20%</button>
+            <button class="chip" type="button" data-d1="30" data-d2="0">30%</button>
+            <button class="chip" type="button" data-d1="50" data-d2="0">50%</button>
+            <button class="chip" type="button" data-d1="50" data-d2="20">50% + 20%</button>
+            <button class="chip" type="button" data-d1="70" data-d2="10">70% + 10%</button>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="btn-group">
+          <button class="btn btn-primary" type="button" id="btnHitung">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            Hitung Diskon
+          </button>
+          <button class="btn btn-secondary" type="reset" id="btnReset">Reset</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- RESULT DISPLAY CARD -->
+    <div class="result-card" id="resultCard">
+      <div class="result-badge-wrap">
+        <span style="font-size:13px;font-weight:700">Ringkasan Diskon</span>
+        <span class="result-badge" id="badgeStatus">Siap Hitung</span>
+      </div>
+
+      <div class="final-price-box">
+        <div class="final-price-label">Total yang Harus Dibayar</div>
+        <div class="strike-price mono" id="resOriginal">—</div>
+        <div class="final-price-value mono" id="resFinalBox">
+          <span class="rp">Rp</span><span id="resFinal">0</span>
+        </div>
+      </div>
+
+      <!-- Savings bar -->
+      <div class="savings-banner">
+        <div class="savings-info">
+          <span class="savings-title">Efektivitas Potongan</span>
+          <span class="savings-percent mono" id="resPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-bar" id="resProgressBar"></div>
+        </div>
+      </div>
+
+      <!-- Breakdown items -->
+      <div class="breakdown-box">
+        <div class="breakdown-row">
+          <span class="breakdown-label">Harga Asal</span>
+          <span class="breakdown-val mono" id="resBasePrice">Rp0</span>
+        </div>
+        <div class="breakdown-row" id="rowDisc1" style="display:none">
+          <span class="breakdown-label">
+            <span class="tag-badge" id="tagDisc1">50%</span> Diskon Utama
+          </span>
+          <span class="breakdown-val cut mono" id="resCut1">-Rp0</span>
+        </div>
+        <div class="breakdown-row" id="rowDisc2" style="display:none">
+          <span class="breakdown-label">
+            <span class="tag-badge" id="tagDisc2">20%</span> Diskon Ekstra
+          </span>
+          <span class="breakdown-val cut mono" id="resCut2">-Rp0</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-label" style="font-weight:700;color:var(--text-main)">Total Hemat</span>
+          <span class="breakdown-val save mono" id="resTotalSavings">Rp0</span>
+        </div>
+      </div>
+
+      <!-- Step by step info -->
+      <div class="steps-box" id="stepsDetail" style="display:none">
+        <div class="step-item">
+          <span class="step-dot" style="background:var(--accent-orange)"></span>
+          <span class="step-text" id="step1Text">Setelah Diskon 1</span>
+          <span class="step-val mono" id="step1Val">Rp0</span>
+        </div>
+        <div class="step-item" id="step2Row" style="display:none">
+          <span class="step-dot" style="background:var(--primary)"></span>
+          <span class="step-text" id="step2Text">Setelah Diskon 2</span>
+          <span class="step-val mono" id="step2Val">Rp0</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script>
+(function() {
+  "use strict";
+
+  // Elements
+  const $ = (id) => document.getElementById(id);
+  const inputPrice = $('inputPrice');
+  const inputDisc1 = $('inputDisc1');
+  const inputDisc2 = $('inputDisc2');
+  const errPrice = $('errPrice');
+  const errDisc1 = $('errDisc1');
+  const errDisc2 = $('errDisc2');
+  const themeToggle = $('themeToggle');
+  const themeIcon = $('themeIcon');
+
+  // Theme Management
+  const THEME_KEY = 'diskonkilat_theme';
+  function applyTheme(isDark) {
+    document.documentElement.classList.toggle('dark', isDark);
+    if (isDark) {
+      themeIcon.innerHTML = `
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+      `;
+    } else {
+      themeIcon.innerHTML = `
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      `;
+    }
+  }
+
+  let isDark = localStorage.getItem(THEME_KEY) === 'dark' || 
+    (!localStorage.getItem(THEME_KEY) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  applyTheme(isDark);
+
+  themeToggle.addEventListener('click', () => {
+    isDark = !document.documentElement.classList.contains('dark');
+    applyTheme(isDark);
+    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+  });
+
+  // Formatting helpers
+  function formatRupiah(num) {
+    return 'Rp' + Math.round(num).toLocaleString('id-ID');
+  }
+  function formatNumberOnly(num) {
+    return Math.round(num).toLocaleString('id-ID');
+  }
+
+  // Strict sanitization & validation
+  function parseMoney(val) {
+    const raw = String(val).replace(/\D/g, '');
+    if (!raw) return { ok: false, msg: 'Wajib diisi nominal harga.' };
+    const num = parseInt(raw, 10);
+    if (!Number.isFinite(num) || num <= 0) return { ok: false, msg: 'Harga harus lebih dari Rp0.' };
+    if (num > 1000000000000) return { ok: false, msg: 'Nominal harga terlalu besar.' };
+    return { ok: true, val: num };
+  }
+
+  function parsePercent(val) {
+    let clean = String(val).trim().replace(',', '.');
+    if (clean === '') return { ok: true, val: 0 }; // optional / default to 0
+    if (!/^\d+(\.\d+)?$/.test(clean)) return { ok: false, msg: 'Format persentase salah (angka saja).' };
+    const num = parseFloat(clean);
+    if (!Number.isFinite(num) || num < 0) return { ok: false, msg: 'Diskon tidak boleh negatif.' };
+    if (num > 100) return { ok: false, msg: 'Maksimal diskon 100%.' };
+    return { ok: true, val: num };
+  }
+
+  // Realtime Live Input Formatting for Price
+  inputPrice.addEventListener('input', function() {
+    const cleanDigits = this.value.replace(/\D/g, '');
+    if (cleanDigits) {
+      this.value = parseInt(cleanDigits, 10).toLocaleString('id-ID');
+    }
+    validateAndCalculate();
+  });
+
+  inputDisc1.addEventListener('input', validateAndCalculate);
+  inputDisc2.addEventListener('input', validateAndCalculate);
+
+  function setFieldError(inputEl, errorEl, res) {
+    if (res.ok) {
+      inputEl.classList.remove('is-invalid');
+      errorEl.textContent = '';
+      errorEl.classList.remove('show');
+    } else {
+      inputEl.classList.add('is-invalid');
+      errorEl.textContent = res.msg;
+      errorEl.classList.add('show');
+    }
+  }
+
+  // Smooth Count-Up Animation
+  let animFrameId = null;
+  function animateValue(targetValue) {
+    const el = $('resFinal');
+    const startValue = parseInt(el.textContent.replace(/\D/g, '') || '0', 10);
+    const duration = 400;
+    const startTime = performance.now();
+
+    if (animFrameId) cancelAnimationFrame(animFrameId);
+
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(startValue + (targetValue - startValue) * ease);
+      el.textContent = formatNumberOnly(current);
+
+      if (progress < 1) {
+        animFrameId = requestAnimationFrame(step);
+      } else {
+        el.textContent = formatNumberOnly(targetValue);
+      }
+    }
+    animFrameId = requestAnimationFrame(step);
+  }
+
+  // Confetti / Sparkle Trigger
+  function launchSparkle() {
+    const box = $('resFinalBox');
+    const rect = box.getBoundingClientRect();
+    const colors = ['#FF2D7B', '#FF6B00', '#10B981', '#FFD166'];
+    
+    for (let i = 0; i < 16; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'confetti';
+      const color = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.background = color;
+      particle.style.left = (rect.left + rect.width / 2) + 'px';
+      particle.style.top = (rect.top + rect.height / 2) + 'px';
+      
+      const angle = Math.random() * Math.PI * 2;
+      const distance = 40 + Math.random() * 60;
+      const tx = Math.cos(angle) * distance;
+      const ty = Math.sin(angle) * distance;
+      particle.style.setProperty('--tx', `${tx}px`);
+      particle.style.setProperty('--ty', `${ty}px`);
+
+      document.body.appendChild(particle);
+      setTimeout(() => particle.remove(), 800);
+    }
+  }
+
+  // Core Calculation
+  function validateAndCalculate() {
+    const pRes = parseMoney(inputPrice.value);
+    const d1Res = parsePercent(inputDisc1.value);
+    const d2Res = parsePercent(inputDisc2.value);
+
+    setFieldError(inputPrice, errPrice, pRes);
+    setFieldError(inputDisc1, errDisc1, d1Res);
+    setFieldError(inputDisc2, errDisc2, d2Res);
+
+    if (!pRes.ok) {
+      resetResultDisplay();
+      return;
+    }
+
+    const price = pRes.val;
+    const d1 = d1Res.ok ? d1Res.val : 0;
+    const d2 = d2Res.ok ? d2Res.val : 0;
+
+    // Diskon bertingkat: D1 dipotong dulu, lalu D2 dipotong dari sisa harga
+    const cut1 = price * (d1 / 100);
+    const priceAfterD1 = price - cut1;
+    const cut2 = priceAfterD1 * (d2 / 100);
+    const finalPrice = Math.max(0, priceAfterD1 - cut2);
+    const totalSavings = cut1 + cut2;
+    const effectivePercent = price > 0 ? (totalSavings / price * 100) : 0;
+
+    // Update UI
+    $('resOriginal').textContent = formatRupiah(price);
+    animateValue(finalPrice);
+
+    $('resBasePrice').textContent = formatRupiah(price);
+    $('resTotalSavings').textContent = formatRupiah(totalSavings);
+    $('resPercent').textContent = effectivePercent.toFixed(1) + '%';
+    $('resProgressBar').style.width = Math.min(100, effectivePercent) + '%';
+
+    // Breakdown Diskon 1 & 2
+    if (d1 > 0) {
+      $('rowDisc1').style.display = 'flex';
+      $('tagDisc1').textContent = d1 + '%';
+      $('resCut1').textContent = '-' + formatRupiah(cut1);
+    } else {
+      $('rowDisc1').style.display = 'none';
+    }
+
+    if (d2 > 0) {
+      $('rowDisc2').style.display = 'flex';
+      $('tagDisc2').textContent = d2 + '%';
+      $('resCut2').textContent = '-' + formatRupiah(cut2);
+    } else {
+      $('rowDisc2').style.display = 'none';
+    }
+
+    // Step detail
+    if (d1 > 0 || d2 > 0) {
+      $('stepsDetail').style.display = 'flex';
+      $('step1Text').textContent = `Setelah Diskon ${d1}%`;
+      $('step1Val').textContent = formatRupiah(priceAfterD1);
+      
+      if (d2 > 0) {
+        $('step2Row').style.display = 'flex';
+        $('step2Text').textContent = `Setelah Extra Diskon ${d2}%`;
+        $('step2Val').textContent = formatRupiah(finalPrice);
+      } else {
+        $('step2Row').style.display = 'none';
+      }
+    } else {
+      $('stepsDetail').style.display = 'none';
+    }
+
+    // Badge Status
+    const badge = $('badgeStatus');
+    if (effectivePercent >= 70) {
+      badge.textContent = 'Hemat Fantastis!';
+      badge.style.background = 'var(--success-subtle)';
+      badge.style.color = 'var(--success)';
+    } else if (effectivePercent >= 40) {
+      badge.textContent = 'Diskon Mantap';
+      badge.style.background = 'var(--accent-orange-subtle)';
+      badge.style.color = 'var(--accent-orange)';
+    } else if (effectivePercent > 0) {
+      badge.textContent = 'Diskon Terpasang';
+      badge.style.background = 'var(--primary-subtle)';
+      badge.style.color = 'var(--primary)';
+    } else {
+      badge.textContent = 'Harga Normal';
+      badge.style.background = 'var(--surface-subtle)';
+      badge.style.color = 'var(--text-muted)';
+    }
+
+    // Trigger pop effect
+    const box = $('resFinalBox');
+    box.classList.remove('animate-pop');
+    void box.offsetWidth;
+    box.classList.add('animate-pop');
+  }
+
+  function resetResultDisplay() {
+    $('resOriginal').textContent = '—';
+    $('resFinal').textContent = '0';
+    $('resBasePrice').textContent = 'Rp0';
+    $('resTotalSavings').textContent = 'Rp0';
+    $('resPercent').textContent = '0%';
+    $('resProgressBar').style.width = '0%';
+    $('rowDisc1').style.display = 'none';
+    $('rowDisc2').style.display = 'none';
+    $('stepsDetail').style.display = 'none';
+    $('badgeStatus').textContent = 'Siap Hitung';
+    $('badgeStatus').style.background = 'var(--primary-subtle)';
+    $('badgeStatus').style.color = 'var(--primary)';
+  }
+
+  // Preset Chips Listener
+  $('presetChips').addEventListener('click', function(e) {
+    const chip = e.target.closest('.chip');
+    if (!chip) return;
+    
+    // Toggle active classes
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+
+    inputDisc1.value = chip.dataset.d1;
+    inputDisc2.value = chip.dataset.d2 === '0' ? '' : chip.dataset.d2;
+    validateAndCalculate();
+  });
+
+  // Calculate Button Manual Click
+  $('btnHitung').addEventListener('click', function() {
+    validateAndCalculate();
+    const pRes = parseMoney(inputPrice.value);
+    if (pRes.ok) {
+      launchSparkle();
+    } else {
+      inputPrice.focus();
+    }
+  });
+
+  // Form Reset
+  $('calcForm').addEventListener('reset', function() {
+    setTimeout(() => {
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      [inputPrice, inputDisc1, inputDisc2].forEach(el => el.classList.remove('is-invalid'));
+      [errPrice, errDisc1, errDisc2].forEach(el => { el.textContent = ''; el.classList.remove('show'); });
+      resetResultDisplay();
+      inputPrice.focus();
+    }, 10);
+  });
+
+  // Initial calculation demo placeholder
+  inputPrice.value = '250.000';
+  inputDisc1.value = '50';
+  inputDisc2.value = '20';
+  validateAndCalculate();
+})();
+</script>
+</body>
+</html>
